@@ -24,15 +24,21 @@ Edit the "piholestats.py" file with en editor of your choice:
 You need to configure your individual pihole settings;
 
   # Setup your pihole enviroment
+  
   HOSTNAME = "pihole" # Pi-hole hostname to report in InfluxDB as tag for each measurement
+  
   PIHOLE_API = "http://xxx.xxx.xxx.xxx/admin/api.php" # Hostname or IP of PiHole
 
 Then you also need to configure your influxDBv2 system, we will need a write access token to the defined bucket in the organisation:
 
   # Setup connection to your influxdbv2
+  
   INFLUXDB_URL = "http://xxx.xxx.xxx.xxx:8086" # Hostname or IP and Port of influxdb2 server
+  
   INFLUXDB_ORG = "my-org" # Organisation configured in influxdb2
+  
   INFLUXDB_TOKEN = "my-token" # Write token associated with correct user
+  
   INFLUXDB_BUCKET = "pihole" # Bucket to write data, can be changed. But the grafana dashbord is based on read-access to "pihole" bucket
 
 Test and rollout
