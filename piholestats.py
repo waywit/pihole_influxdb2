@@ -5,6 +5,7 @@
 # 2016 (December) Adapted to work with InfluxDB by /u/tollsjo
 # 2016 (December) Updated by Cludch https://github.com/sco01/piholestatus
 # 2020 (March) Updated by http://cactusprojects.com/pihole-logging-to-influxdb-&-grafana-dash
+# 2022 (November) Start work on update influxDBv2 compatibility
 
 import requests
 import time
