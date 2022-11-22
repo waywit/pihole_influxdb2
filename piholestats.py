@@ -9,7 +9,8 @@
 
 import requests
 import time
-from influxdb import InfluxDBClient
+# from influxdb import InfluxDBClient
+from influxdb_client import InfluxDBClient
 
 HOSTNAME = "pihole" # Pi-hole hostname to report in InfluxDB for each measurement
 PIHOLE_API = "http://xxx.xxx.xxx.xxx/admin/api.php" # IP of PiHole
@@ -19,6 +20,10 @@ INFLUXDB_USERNAME = ""
 INFLUXDB_PASSWORD = ""
 INFLUXDB_DATABASE = "dev_pihole"
 DELAY = 10 # seconds
+
+# influxdb v2 settings
+INFLUXDB_BUCKET = "dev_pihole"
+
 
 def send_msg(domains_blocked, dns_queries_today, ads_percentage_today, ads_blocked_today):
 
