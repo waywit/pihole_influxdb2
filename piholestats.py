@@ -19,6 +19,7 @@ PIHOLE_API = "http://xxx.xxx.xxx.xxx/admin/api.php" # Hostname or IP of PiHole
 # DELAY = 10 # seconds
 
 # influxdb v2 settings are donein "config.ini"
+INFLUXDB_URL = ""
 INFLUXDB_ORG = ""
 INFLUXDB_TOKEN = ""
 INFLUXDB_BUCKET = "mybucket"
@@ -42,8 +43,8 @@ def send_msg(domains_blocked, dns_queries_today, ads_percentage_today, ads_block
 
 	# Setup influxDB client with write API
 	client = InfluxDBClient(INFLUXDB_SERVER, INFLUXDB_TOKEN, INFLUXDB_ORG)
-	write_api = self.client.write_api(write_options=SYNCHRONOUS)
-	write_api.write(INFLUXDB_BUCKET, json_body)
+	write_api = client.write_api(write_options=SYNCHRONOUS)
+	write_api.write(INFLUXDB_BUCKET, INFLUXDB_ORG, json_body)
 	client.close()
 
 api = requests.get(PIHOLE_API) # URI to pihole server api
