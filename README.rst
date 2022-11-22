@@ -40,3 +40,10 @@ The following options are supported:
     self.client = InfluxDBClient.from_config_file("config.ini")
 
 .. code-block::
+
+    [influx2]
+    url=http://localhost:8086
+    org=my-org
+    token=my-token
+    timeout=6000
+    verify_ssl=False
