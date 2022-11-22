@@ -43,11 +43,11 @@ def send_msg(domains_blocked, dns_queries_today, ads_percentage_today, ads_block
 	    }
 	]
 
-	# remove: client = InfluxDBClient(INFLUXDB_SERVER, INFLUXDB_PORT, INFLUXDB_USERNAME, INFLUXDB_PASSWORD, INFLUXDB_DATABASE) # InfluxDB host, InfluxDB port, Username, Password, database
-	# Setup new influxDB Client from config file "config.ini"
+	# Setup influxDB client with write API
 	client = InfluxDBClient(INFLUXDB_SERVER, INFLUXDB_TOKEN, INFLUXDB_ORG)
-	# remove: client.create_database(INFLUXDB_DATABASE) # Uncomment to create the database (expected to exist prior to feeding it data)
-	client.write(INFLUXDB_BUCKET, INFLUXDB_ORG, json_body)
+	write_api = client.write_api(write_options=SYNCHRONOUS)
+	write_api.write(INFLUXDB_BUCKET, INFLUXDB_ORG, json_body)
+	client.close()
 
 api = requests.get(PIHOLE_API) # URI to pihole server api
 API_out = api.json()
