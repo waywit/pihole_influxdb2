@@ -16,34 +16,4 @@ Install "pip" on your system:
 Client configuration
 --------------------
 
-Via File
-^^^^^^^^
-A client can be configured via ``*.ini`` file in segment ``influx2``.
-
-The following options are supported:
-
-- ``url`` - the url to connect to InfluxDB
-- ``org`` - default destination organization for writes and queries
-- ``token`` - the token to use for the authorization
-- ``timeout`` - socket timeout in ms (default value is 10000)
-- ``verify_ssl`` - set this to false to skip verifying SSL certificate when calling API from https server
-- ``ssl_ca_cert`` - set this to customize the certificate file to verify the peer
-- ``cert_file`` - path to the certificate that will be used for mTLS authentication
-- ``cert_key_file`` - path to the file contains private key for mTLS certificate
-- ``cert_key_password`` - string or function which returns password for decrypting the mTLS private key
-- ``connection_pool_maxsize`` - set the number of connections to save that can be reused by urllib3
-- ``auth_basic`` - enable http basic authentication when talking to a InfluxDB 1.8.x without authentication but is accessed via reverse proxy with basic authentication (defaults to false)
-- ``profilers`` - set the list of enabled `Flux profilers <https://docs.influxdata.com/influxdb/v2.0/reference/flux/stdlib/profiler/>`_
-
-.. code-block:: python
-
-    self.client = InfluxDBClient.from_config_file("config.ini")
-
-.. code-block::
-
-    [influx2]
-    url=http://localhost:8086
-    org=my-org
-    token=my-token
-    timeout=6000
-    verify_ssl=False
+Edit the "config.ini" to match your influxdb configuration. Information can be found at influxdata: https://github.com/influxdata/influxdb-client-python#client-configuration
