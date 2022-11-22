@@ -14,16 +14,17 @@ from influxdb_client import InfluxDBClient
 
 HOSTNAME = "pihole" # Pi-hole hostname to report in InfluxDB for each measurement
 PIHOLE_API = "http://xxx.xxx.xxx.xxx/admin/api.php" # IP of PiHole
-INFLUXDB_SERVER = "xxx.xxx.xxx.xxx" # IP or hostname to InfluxDB server
-INFLUXDB_PORT = 8086 # Port on InfluxDB server
-INFLUXDB_USERNAME = ""
-INFLUXDB_PASSWORD = ""
-INFLUXDB_DATABASE = "dev_pihole"
+INFLUXDB_SERVER = "http://xxx.xxx.xxx.xxx:8086" # IP or hostname to InfluxDB server
+# INFLUXDB_PORT = 8086 # Port on InfluxDB server
+# INFLUXDB_USERNAME = ""
+# INFLUXDB_PASSWORD = ""
+# INFLUXDB_DATABASE = "dev_pihole"
 DELAY = 10 # seconds
 
 # influxdb v2 settings
+INFLUXDB_ORG = ""
+INFLUXDB_TOKEN = ""
 INFLUXDB_BUCKET = "dev_pihole"
-
 
 def send_msg(domains_blocked, dns_queries_today, ads_percentage_today, ads_blocked_today):
 
@@ -42,9 +43,11 @@ def send_msg(domains_blocked, dns_queries_today, ads_percentage_today, ads_block
 	    }
 	]
 
-	client = InfluxDBClient(INFLUXDB_SERVER, INFLUXDB_PORT, INFLUXDB_USERNAME, INFLUXDB_PASSWORD, INFLUXDB_DATABASE) # InfluxDB host, InfluxDB port, Username, Password, database
-	# client.create_database(INFLUXDB_DATABASE) # Uncomment to create the database (expected to exist prior to feeding it data)
-	client.write_points(json_body)
+	# remove: client = InfluxDBClient(INFLUXDB_SERVER, INFLUXDB_PORT, INFLUXDB_USERNAME, INFLUXDB_PASSWORD, INFLUXDB_DATABASE) # InfluxDB host, InfluxDB port, Username, Password, database
+	# Setup new influxDB Client from config file "config.ini"
+	client = InfluxDBClient(INFLUXDB_SERVER, INFLUXDB_TOKEN, INFLUXDB_ORG)
+	# remove: client.create_database(INFLUXDB_DATABASE) # Uncomment to create the database (expected to exist prior to feeding it data)
+	client.write(INFLUXDB_BUCKET, INFLUXDB_ORG, json_body)
 
 api = requests.get(PIHOLE_API) # URI to pihole server api
 API_out = api.json()
