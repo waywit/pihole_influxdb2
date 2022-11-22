@@ -44,3 +44,20 @@ You can test your configuration by running:
   
 And then check your influxDB bucket if you have received the first values:
 
+- ads_blocked_today
+- ads_percentage_today
+- dns_queries_today
+- domains_blocked
+
+Best idea is to run it as a cronjob, so call
+
+  $ crontab -e
+  
+And insert the following line to execute the script every minute:
+
+  */1 * * * * /usr/bin/python3 /home/proxmox/bin/pihole_influxdb2/piholestats.py >/dev/null 2>&1
+
+grafana setup
+-------------
+
+You need to connect the influxDBv2 in grafana using the "flux" language (not the opd influxQL). You will need read token to the configured bucket. Then you can import the "grafana/pihole_grafana.json".
