@@ -16,4 +16,4 @@ Install "pip" on your system:
 Client configuration
 --------------------
 
-Can be found at influxdata: https://github.com/influxdata/influxdb-client-python#client-configuration
+Edit the "config.ini" to match your influxdb configuration. Information can be found at influxdata: https://github.com/influxdata/influxdb-client-python#client-configuration
