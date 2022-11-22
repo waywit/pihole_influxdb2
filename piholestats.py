@@ -10,7 +10,7 @@
 import requests
 import time
 # from influxdb import InfluxDBClient
-from influxdb_client import InfluxDBClient
+from influxdb_client import InfluxDBClient, Point, WriteOptions
 
 HOSTNAME = "pihole" # Pi-hole hostname to report in InfluxDB for each measurement
 PIHOLE_API = "http://xxx.xxx.xxx.xxx/admin/api.php" # IP of PiHole
