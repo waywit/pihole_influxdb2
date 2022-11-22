@@ -16,16 +16,11 @@ from influxdb_client .client.write_api import SYNCHRONOUS
 # Setup pihole enviroment
 HOSTNAME = "pihole" # Pi-hole hostname to report in InfluxDB as tag for each measurement
 PIHOLE_API = "http://xxx.xxx.xxx.xxx/admin/api.php" # Hostname or IP of PiHole
-# INFLUXDB_SERVER = "http://xxx.xxx.xxx.xxx:8086" # IP or hostname to InfluxDB server
-# INFLUXDB_PORT = 8086 # Port on InfluxDB server
-# INFLUXDB_USERNAME = ""
-# INFLUXDB_PASSWORD = ""
-# INFLUXDB_DATABASE = "dev_pihole"
 # DELAY = 10 # seconds
 
 # influxdb v2 settings are donein "config.ini"
-# INFLUXDB_ORG = ""
-# INFLUXDB_TOKEN = ""
+INFLUXDB_ORG = ""
+INFLUXDB_TOKEN = ""
 INFLUXDB_BUCKET = "mybucket"
 
 def send_msg(domains_blocked, dns_queries_today, ads_percentage_today, ads_blocked_today):
@@ -46,10 +41,9 @@ def send_msg(domains_blocked, dns_queries_today, ads_percentage_today, ads_block
 	]
 
 	# Setup influxDB client with write API
-	client = InfluxDBClient.from_config_file("config.ini")
-	# client = InfluxDBClient(INFLUXDB_SERVER, INFLUXDB_TOKEN, INFLUXDB_ORG)
-	write_api = client.write_api(write_options=SYNCHRONOUS)
-	write_api.write(INFLUXDB_BUCKET, INFLUXDB_ORG, json_body)
+	client = InfluxDBClient(INFLUXDB_SERVER, INFLUXDB_TOKEN, INFLUXDB_ORG)
+	write_api = self.client.write_api(write_options=SYNCHRONOUS)
+	write_api.write(INFLUXDB_BUCKET, json_body)
 	client.close()
 
 api = requests.get(PIHOLE_API) # URI to pihole server api
