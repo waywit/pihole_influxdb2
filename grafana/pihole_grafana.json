@@ -3,24 +3,37 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 24,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "1ado8omgz"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -29,15 +42,44 @@
       },
       "id": 2,
       "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "1ado8omgz"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "PiHole Stats",
       "type": "row"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "dev_pihole",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "NGNN8omRz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "DNS Queries",
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 6,
-        "w": 6,
+        "h": 9,
+        "w": 12,
         "x": 0,
         "y": 1
       },
@@ -46,92 +88,63 @@
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
             "last"
           ],
-          "defaults": {
-            "mappings": [],
-            "min": 0,
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "title": "DNS Queries",
-            "unit": "none"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.6.2",
+      "pluginVersion": "9.2.5",
       "targets": [
         {
-          "alias": "DNS Queries",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "datasource": {
+            "type": "influxdb",
+            "uid": "NGNN8omRz"
+          },
           "hide": false,
-          "measurement": "piholestats.pihole",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "dns_queries_today"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "host",
-              "operator": "=",
-              "value": "pihole"
-            }
-          ]
+          "query": "from(bucket: \"pihole\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"piholestats.pihole\")\n  |> filter(fn: (r) => r[\"_field\"] == \"dns_queries_today\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "PiHole Stats",
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "dev_pihole",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "NGNN8omRz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "Ads Percentage",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "%"
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 6,
+        "h": 9,
+        "w": 12,
+        "x": 12,
         "y": 1
       },
       "hideTimeOverride": false,
@@ -139,291 +152,172 @@
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
             "last"
           ],
-          "defaults": {
-            "mappings": [],
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "title": "Ads Percentage",
-            "unit": "%"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.6.2",
+      "pluginVersion": "9.2.5",
       "targets": [
         {
-          "alias": "Ads Blocked",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "datasource": {
+            "type": "influxdb",
+            "uid": "NGNN8omRz"
+          },
           "hide": false,
-          "measurement": "piholestats.pihole",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "ads_percentage_today"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "host",
-              "operator": "=",
-              "value": "pihole"
-            }
-          ]
+          "query": "from(bucket: \"pihole\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"piholestats.pihole\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ads_percentage_today\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "PiHole Stats",
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "dev_pihole",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "NGNN8omRz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "Ads Blocked",
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 12,
-        "y": 1
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 10
       },
       "hideTimeOverride": false,
       "id": 6,
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
             "last"
           ],
-          "defaults": {
-            "mappings": [],
-            "min": 0,
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "title": "Ads Blocked",
-            "unit": "none"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.6.2",
+      "pluginVersion": "9.2.5",
       "targets": [
         {
-          "alias": "Ads Blocked",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "datasource": {
+            "type": "influxdb",
+            "uid": "NGNN8omRz"
+          },
           "hide": false,
-          "measurement": "piholestats.pihole",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "ads_blocked_today"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "host",
-              "operator": "=",
-              "value": "pihole"
-            }
-          ]
+          "query": "from(bucket: \"pihole\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"piholestats.pihole\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ads_blocked_today\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")\n",
+          "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "PiHole Stats",
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "dev_pihole",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "NGNN8omRz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "Domains Blocked",
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 18,
-        "y": 1
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 10
       },
       "hideTimeOverride": false,
       "id": 7,
       "links": [],
       "options": {
         "colorMode": "value",
-        "fieldOptions": {
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
           "calcs": [
             "last"
           ],
-          "defaults": {
-            "mappings": [],
-            "min": 0,
-            "nullValueMode": "connected",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "title": "Domains Blocked",
-            "unit": "none"
-          },
-          "overrides": [],
+          "fields": "",
           "values": false
         },
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal"
+        "textMode": "auto"
       },
-      "pluginVersion": "6.6.2",
+      "pluginVersion": "9.2.5",
       "targets": [
         {
-          "alias": "Domains Blocked",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "datasource": {
+            "type": "influxdb",
+            "uid": "NGNN8omRz"
+          },
           "hide": false,
-          "measurement": "piholestats.pihole",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "domains_blocked"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "host",
-              "operator": "=",
-              "value": "pihole"
-            }
-          ]
+          "query": "from(bucket: \"pihole\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"piholestats.pihole\")\n  |> filter(fn: (r) => r[\"_field\"] == \"domains_blocked\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "PiHole Stats",
       "type": "stat"
     }
   ],
-  "schemaVersion": 22,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {
@@ -441,7 +335,8 @@
     ]
   },
   "timezone": "",
-  "title": "PiHole",
+  "title": "PiHole Monitoring",
   "uid": "oP8IN5mRk",
-  "version": 5
+  "version": 8,
+  "weekStart": ""
 }

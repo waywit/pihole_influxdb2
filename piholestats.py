@@ -21,7 +21,7 @@ PIHOLE_API = "http://xxx.xxx.xxx.xxx/admin/api.php" # Hostname or IP of PiHole
 INFLUXDB_URL = "http://xxx.xxx.xxx.xxx:8086" # Hostname or IP and Port of influxdb2 server
 INFLUXDB_ORG = "my-org" # Organisation configured in influxdb2
 INFLUXDB_TOKEN = "my-token" # Write token associated with correct user
-INFLUXDB_BUCKET = "mybucket" # Bucket to write data
+INFLUXDB_BUCKET = "pihole" # Bucket to write data, can be changed. But the grafana dashbord is based on read-access to "pihole" bucket
 
 def send_msg(domains_blocked, dns_queries_today, ads_percentage_today, ads_blocked_today):
 
