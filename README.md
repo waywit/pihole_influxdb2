@@ -56,3 +56,5 @@ And insert the following line to execute the script every minute:
 # grafana setup
 
 You need to connect the influxDBv2 in grafana using the "flux" language (not the opd influxQL). You will need read token to the configured bucket. Then you can import the "grafana/pihole_grafana.json".
+
+![Screenshot of grafana dashboard](https://github.com/waywit/pihole_influxdb2/raw/master/grafana/PiHole_Grafana.png)
