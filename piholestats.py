@@ -6,7 +6,7 @@
 # 2016 (December) Updated by Cludch https://github.com/sco01/piholestatus
 # 2020 (March) Updated by http://cactusprojects.com/pihole-logging-to-influxdb-&-grafana-dash
 # 2022 (November) Start work on update influxDBv2 compatibility
-
+# 2023 (February) Applied changes to Pihole API to script
 import requests
 import time
 # from influxdb import InfluxDBClient
@@ -15,7 +15,8 @@ from influxdb_client .client.write_api import SYNCHRONOUS
 
 # Setup your pihole enviroment
 HOSTNAME = "pihole" # Pi-hole hostname to report in InfluxDB as tag for each measurement
-PIHOLE_API = "http://xxx.xxx.xxx.xxx/admin/api.php" # Hostname or IP of PiHole
+PIHOLE_API = "http://xxx.xxx.xxx.xxx/admin/api.php?summary&auth=<API_TOKEN>" # Hostname or IP of PiHole, change API_TOKEN to Pihole API Token if WebUI is password protected
+
 
 # Setup connection to your influxdbv2
 INFLUXDB_URL = "http://xxx.xxx.xxx.xxx:8086" # Hostname or IP and Port of influxdb2 server
@@ -50,10 +51,10 @@ api = requests.get(PIHOLE_API) # URI to pihole server api
 API_out = api.json()
 
 # Parse information from pihole API
-domains_blocked = (API_out['domains_being_blocked'])#.replace(',', '')
-dns_queries_today = (API_out['dns_queries_today'])#.replace(',', '')
-ads_percentage_today = (API_out['ads_percentage_today'])#
-ads_blocked_today = (API_out['ads_blocked_today'])#.replace(',', '')
+domains_blocked = (API_out['domains_being_blocked']).replace(',', '')
+dns_queries_today = (API_out['dns_queries_today']).replace(',', '')
+ads_percentage_today = (API_out['ads_percentage_today'])
+ads_blocked_today = (API_out['ads_blocked_today']).replace(',', '')
 
 # Create JSON and it in influxdbv2
 send_msg(domains_blocked, dns_queries_today, ads_percentage_today, ads_blocked_today)
